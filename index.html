@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Monitor de Temperatura y Humedad</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.23.0/firebase-app-compat.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.23.0/firebase-database-compat.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+  <link rel="stylesheet" href="temperatura.css">
+</head>
+  <body class="temp-mild">
+    <nav class="main-nav">
+      <div class="nav-container">
+        <div class="nav-brand">
+          <a href="#" class="nav-logo">ESP32</a>
+        </div>
+        <div class="nav-title">
+          Monitoreo de Temperatura
+        </div>
+        <div class="nav-right">
+          <div class="theme-switch-wrapper">
+            <em>Modo</em>
+            <label class="theme-switch" for="checkbox">
+              <input type="checkbox" id="checkbox" />
+              <span class="slider"></span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+  <div class="container">
+
+    <h1>Monitor de Temperatura y Humedad</h1>
+    
+    <div id="error-message" class="error-message">
+      Error al conectar con la base de datos. Por favor, verifica tu conexión.
+    </div>
+    
+    <div id="loading" class="loading">
+      <div class="spinner"></div>
+      <p>Cargando datos...</p>
+    </div>
+    
+    <div id="dashboard-content" style="display: none;">
+      <div id="temp-descriptor" class="temp-descriptor temp-mild-text">Temperatura normal</div>
+      
+      <div class="connection-status">
+        <div id="connection-indicator" class="connection-indicator connection-waiting"></div>
+        <span id="connection-text" class="connection-text">Verificando conexión...</span>
+      </div>
+      
+      <div class="current-readings">
+        <div class="reading-card">
+          <h2>Temperatura</h2>
+          <div id="temp-icon" class="temp-icon">🌡️</div>
+          <div class="reading-value temperature" id="temp-value">--</div>
+          <div>°C</div>
+        </div>
+        
+        <div class="reading-card">
+          <h2>Humedad</h2>
+          <div class="temp-icon">💧</div>
+          <div class="reading-value humidity" id="humidity-value">--</div>
+          <div>%</div>
+        </div>
+      </div>
+      
+      <div class="min-max-readings">
+        <div class="min-max-card">
+          <h3>Temperatura Mínima</h3>
+          <div class="min-value" id="min-temp">--</div>
+          <div>°C</div>
+        </div>
+        
+        <div class="min-max-card">
+          <h3>Temperatura Máxima</h3>
+          <div class="max-value" id="max-temp">--</div>
+          <div>°C</div>
+        </div>
+        
+        <button id="reset-min-max" class="reset-min-max">Reiniciar Min/Max</button>
+      </div>
+      
+      <div id="status-indicator" class="status-indicator status-ok">Estado: OK</div>
+      
+      <div class="chart-container">
+        <div class="chart-controls">
+          <button id="refresh-chart" class="refresh-btn">
+            <span class="refresh-icon">🔄</span> Actualizar gráfica
+          </button>
+        </div>
+        <canvas id="sensorChart"></canvas>
+      </div>
+      
+      <div class="last-update" id="last-update">Última actualización: --</div>
+      
+  <!-- Sección de Configuración de Alertas de Telegram con el cambio solicitado -->
+  <div class="telegram-config-section">
+    <h2><span class="telegram-icon">📲</span> Configuración de Alertas de Telegram</h2>
+    
+    <div class="config-form">
+      <div>
+        <div class="form-group">
+          <label for="telegram-active">Activar Alertas de Telegram</label>
+          <label class="form-switch">
+            <input type="checkbox" id="telegram-active">
+            <span id="telegram-status-text">Alertas desactivadas</span>
+          </label>
+        </div>
+        
+        <div class="form-group">
+          <label for="temp-threshold">Límite de Temperatura (°C)</label>
+          <input type="number" id="temp-threshold" class="form-control" min="0" max="100" value="30" step="0.5">
+        </div>
+
+        <div class="form-group">
+          <label for="alert-cooldown">Tiempo entre alertas</label>
+          <div class="input-group">
+            <input type="number" id="alert-cooldown" class="form-control" min="1" max="120" value="10">
+            <select id="cooldown-unit" class="form-select">
+              <option value="seconds">Segundos</option>
+              <option value="minutes" selected>Minutos</option>
+            </select>
+          </div>
+          <small style="color: #6c757d;">Tiempo mínimo que debe pasar antes de enviar otra alerta</small>
+        </div>
+      </div>
+      
+      <div>
+        <div class="form-group">
+          <label for="recipient-name">Nombre del Destinatario</label>
+          <input type="text" id="recipient-name" class="form-control" placeholder="Nombre">
+        </div>
+        
+        <div class="form-group">
+          <label for="chat-id">ID de Chat de Telegram</label>
+          <input type="text" id="chat-id" class="form-control" placeholder="Ej: 123456789">
+        </div>
+        
+        <div class="form-group">
+          <label for="bot-token">Token del Bot</label>
+          <input type="password" id="bot-token" class="form-control" placeholder="Token del bot">
+          <small style="color: #6c757d;">Nunca compartiremos tus credenciales con nadie.</small>
+        </div>
+      </div>
+    </div>
+    
+    <button id="save-telegram-config" class="btn btn-primary">
+      <span>💾</span> Guardar Configuración
+    </button>
+    
+    <button id="test-telegram" class="btn btn-test">
+      <span>🧪</span> Probar Alerta
+    </button>
+    
+    <div class="recipient-info">
+      <h3>Información de Alertas</h3>
+      <div>Estado: <span id="alert-status" class="alert-badge alert-badge-inactive">Desactivado</span></div>
+      <div>Última alerta: <span id="last-alert-time">Nunca</span></div>
+      <div>Última verificación: <span id="last-check-time">Nunca</span></div>
+      <div>Próxima verificación: <span id="next-check-time">-</span></div>
+      <div id="alert-history-container"></div>
+    </div>
+  </div>
+
+  <div class="wifi-config-section">
+  <h2><span class="wifi-icon">📶</span> Configuración WiFi</h2>
+  
+  <div class="wifi-status">
+    <p>Dispositivo: <span id="wifi-connection-status">ESP32</span></p>
+  </div>
+  
+  <div class="config-actions">
+    <button id="config-wifi-btn" class="btn btn-primary">
+      <span>⚙️</span> <a href="http://192.168.1.92/#">Configurar WiFi</a>
+    </button>
+    <p class="help-text">
+      Cambia la configuración del WiFi del ESP32
+    </p>
+  </div>
+
+    <div class="footer">
+      <p>ESP32 + Firebase + Sensor DHT</p>
+    </div>
+  </div>
+
+
+
+<script src="temperatura.js"></script>
+</body>
+</html>

@@ -120,10 +120,12 @@ function resetMinMaxTemps() {
 // Evento para el botón de reinicio de min/max
 resetMinMaxButton.addEventListener('click', resetMinMaxTemps);
 
-// Manejar cambio de modo sin localStorage
+// Manejar cambio de modo con localStorage
 checkbox.addEventListener('change', function() {
   if (this.checked) {
     bodyElement.classList.add('dark-mode');
+    localStorage.setItem('darkMode', 'enabled');
+    
     // Si hay un gráfico inicializado, actualizar el tema
     if (window.sensorChart) {
       updateChartTheme(true);
@@ -131,9 +133,25 @@ checkbox.addEventListener('change', function() {
     }
   } else {
     bodyElement.classList.remove('dark-mode');
+    localStorage.setItem('darkMode', 'disabled');
+    
     // Si hay un gráfico inicializado, actualizar el tema
     if (window.sensorChart) {
       updateChartTheme(false);
+      window.sensorChart.update();
+    }
+  }
+});
+
+// Verificar preferencia guardada al cargar la página
+document.addEventListener('DOMContentLoaded', function() {
+  if (localStorage.getItem('darkMode') === 'enabled') {
+    bodyElement.classList.add('dark-mode');
+    checkbox.checked = true;
+    
+    // Si hay un gráfico inicializado, actualizar el tema
+    if (window.sensorChart) {
+      updateChartTheme(true);
       window.sensorChart.update();
     }
   }
@@ -935,4 +953,3 @@ try {
   }, 500);
   errorMessage.textContent = "Error al conectar con Firebase: " + error.message;
 }
-

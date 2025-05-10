@@ -1,3 +1,4 @@
+/* CSS existente - mantener todo lo anterior */
 * {
       box-sizing: border-box;
       margin: 0;
@@ -129,47 +130,180 @@
       }
     }
     
-    .current-readings {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-around;
-      gap: 20px;
-      margin-bottom: 30px;
-      animation: fadeInUp 0.8s ease-out;
-    }
-    
-    .reading-card {
+    /* Nuevo estilo tabla/ficha técnica para temperaturas */
+    .temp-data-card {
       background-color: var(--reading-card-light);
       border-radius: 10px;
-      padding: 20px;
-      min-width: 150px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      margin: 15px 0;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      animation: fadeIn 0.8s ease-out;
+    }
+    
+    .dark-mode .temp-data-card {
+      background-color: var(--reading-card-dark);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .temp-data-row {
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+      transition: background-color 0.2s ease;
+    }
+    
+    .dark-mode .temp-data-row {
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    
+    .temp-data-row:last-child {
+      border-bottom: none;
+    }
+    
+    .temp-data-row:hover {
+      background-color: rgba(0, 0, 0, 0.02);
+    }
+    
+    .dark-mode .temp-data-row:hover {
+      background-color: rgba(255, 255, 255, 0.05);
+    }
+    
+    .temp-data-label {
       flex: 1;
+      padding: 12px 15px;
+      font-weight: 500;
+      color: var(--text-light);
+      width: 50%;
+      text-align: left;
+    }
+    
+    .dark-mode .temp-data-label {
+      color: var(--text-dark);
+    }
+    
+    .temp-data-value {
+      flex: 1;
+      padding: 12px 15px;
+      text-align: right;
+      font-weight: 600;
+      width: 50%;
+    }
+    
+    .temp-data-value.current-temp {
+      color: #dc3545;
+      font-size: 1.1rem;
+    }
+    
+    .temp-data-value.min-temp {
+      color: #0d6efd;
+      font-size: 1.1rem;
+    }
+    
+    .temp-data-value.max-temp {
+      color: #dc3545;
+      font-size: 1.1rem;
+    }
+    
+    .temp-data-value.humidity {
+      color: #0d6efd;
+      font-size: 1.1rem;
+    }
+    
+    /* Fila de acción (botón) */
+    .action-row {
+      background-color: rgba(0, 0, 0, 0.02);
+    }
+    
+    .dark-mode .action-row {
+      background-color: rgba(255, 255, 255, 0.03);
+    }
+    
+    .reset-min-max-btn {
+      background-color: #6c757d;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      padding: 8px 15px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+    
+    .reset-min-max-btn:hover {
+      background-color: #5a6268;
+      transform: translateY(-2px);
+    }
+    
+    .reset-min-max-btn:active {
+      transform: translateY(0);
+    }
+    
+    .dark-mode .reset-min-max-btn {
+      background-color: #495057;
+    }
+    
+    .dark-mode .reset-min-max-btn:hover {
+      background-color: #343a40;
+    }
+    
+    /* Media queries para pantallas pequeñas */
+    @media (max-width: 768px) {
+      .temp-data-label,
+      .temp-data-value {
+        padding: 10px 15px;
+      }
+      
+      .temp-data-value.current-temp,
+      .temp-data-value.min-temp,
+      .temp-data-value.max-temp,
+      .temp-data-value.humidity {
+        font-size: 1rem;
+      }
+    }
+
+    /* Modificaciones a las tarjetas de lectura para el diseño horizontal */
+    .reading-card {
+      background-color: var(--reading-card-light);
+      border-radius: 8px;
+      padding: 8px;
+      flex: 1;
+      width: 20%; /* Ancho igual para todas las tarjetas */
       text-align: center;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
       transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.5s ease;
       border: 1px solid var(--border-light);
       animation: pulse 2s infinite;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-width: 0; /* Evita desbordamiento horizontal */
+      height: 100px; /* Altura reducida */
     }
     
     .dark-mode .reading-card {
       background-color: var(--reading-card-dark);
       border: 1px solid var(--border-dark);
-      box-shadow: 0 4px 15px var(--shadow-dark);
+      box-shadow: 0 2px 10px var(--shadow-dark);
     }
     
     .reading-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 8px 25px var(--shadow-light);
+      transform: translateY(-3px);
+      box-shadow: 0 4px 15px var(--shadow-light);
     }
     
     .dark-mode .reading-card:hover {
-      box-shadow: 0 8px 25px var(--shadow-dark);
+      box-shadow: 0 4px 15px var(--shadow-dark);
     }
     
     .reading-card h2 {
       margin-top: 0;
+      margin-bottom: 2px;
       color: #555;
-      font-size: 1.2rem;
+      font-size: 0.9rem;
       transition: color 0.5s ease;
     }
     
@@ -178,15 +312,15 @@
     }
     
     .reading-value {
-      font-size: 2.5rem;
+      font-size: 1.7rem;
       font-weight: bold;
-      margin: 10px 0;
+      margin: 2px 0;
       transition: color 0.3s ease;
     }
     
     @media (max-width: 600px) {
       .reading-value {
-        font-size: 2rem;
+        font-size: 1.5rem;
       }
     }
     
@@ -199,11 +333,144 @@
     }
     
     .temp-icon {
-      font-size: 1.8rem;
-      margin: 5px 0;
+      font-size: 1.2rem;
+      margin: 2px 0;
       animation: bounce 2s infinite;
     }
+
+    /* Modificaciones a las tarjetas min-max para el diseño horizontal - DESTACADAS */
+    .min-max-card {
+      background-color: var(--reading-card-light);
+      border-radius: 8px;
+      padding: 8px;
+      flex: 1;
+      width: 20%; /* Ancho igual para todas las tarjetas */
+      text-align: center;
+      box-shadow: 0 3px 15px rgba(0, 0, 0, 0.15);
+      transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.5s ease;
+      border: 2px solid var(--border-light);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      animation: pulseHighlight 2s infinite;
+      min-width: 0; /* Evita desbordamiento horizontal */
+      height: 100px; /* Altura reducida */
+    }
     
+    .dark-mode .min-max-card {
+      background-color: var(--reading-card-dark);
+      border: 2px solid var(--border-dark);
+      box-shadow: 0 3px 15px var(--shadow-dark);
+    }
+    
+    .min-max-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+    }
+    
+    .dark-mode .min-max-card:hover {
+      box-shadow: 0 5px 20px var(--shadow-dark);
+    }
+    
+    .min-max-card h3 {
+      margin-top: 0;
+      margin-bottom: 2px;
+      color: #555;
+      font-size: 0.85rem;
+      font-weight: 600;
+      transition: color 0.5s ease;
+    }
+    
+    .dark-mode .min-max-card h3 {
+      color: #ccc;
+    }
+    
+    .min-value {
+      font-size: 1.7rem;
+      font-weight: bold;
+      margin: 2px 0;
+      transition: color 0.3s ease;
+      color: #0d6efd;
+    }
+    
+    .max-value {
+      font-size: 1.7rem;
+      font-weight: bold;
+      margin: 2px 0;
+      transition: color 0.3s ease;
+      color: #dc3545;
+    }
+    
+    @keyframes pulseHighlight {
+      0% { transform: scale(1); box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15); }
+      50% { transform: scale(1.03); box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2); }
+      100% { transform: scale(1); box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15); }
+    }
+    
+    /* Contenedor para el botón de reinicio */
+    .reset-button-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex: 1;
+      width: 20%; /* Ancho igual para todas las tarjetas */
+      min-width: 0; /* Evita desbordamiento horizontal */
+      height: 100px; /* Altura reducida */
+    }
+    
+    .reset-min-max {
+      background-color: #6c757d;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 8px;
+      width: 100%;
+      height: 100%;
+      min-height: 70px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      margin: 0;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      white-space: nowrap;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .reset-min-max:hover {
+      background-color: #5a6268;
+      transform: translateY(-2px);
+    }
+    
+    .dark-mode .reset-min-max {
+      background-color: #495057;
+    }
+    
+    .dark-mode .reset-min-max:hover {
+      background-color: #343a40;
+    }
+
+    /* Media queries para pantallas pequeñas */
+    @media (max-width: 768px) {
+      .horizontal-readings-container {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      
+      .reading-card, .min-max-card, .reset-button-container {
+        width: 100% !important;
+        margin-bottom: 8px;
+        height: 80px;
+      }
+      
+      .reset-min-max {
+        min-height: 50px;
+      }
+    }
+
+    /* Resto del CSS existente - mantener todo lo siguiente */
     .chart-container {
       position: relative;
       height: 50vh;
@@ -448,6 +715,10 @@
       background: linear-gradient(to right, #ff9a9e, #ff4b2b);
     }
     
+    .dark-mode .temp-hot-text {
+      background: linear-gradient(to right, #a66669, #892d1f);
+    }
+    
     /* Botón para reiniciar/actualizar gráfica */
     .chart-controls {
       display: flex;
@@ -495,93 +766,6 @@
       transition: transform 0.5s ease;
     }
     
-    .min-max-readings {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-around;
-      gap: 15px;
-      margin: 20px 0;
-      animation: fadeInUp 0.8s ease-out;
-    }
-    
-    .min-max-card {
-      background-color: var(--reading-card-light);
-      border-radius: 10px;
-      padding: 15px;
-      min-width: 120px;
-      flex: 1;
-      text-align: center;
-      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
-      transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.5s ease;
-      border: 1px solid var(--border-light);
-    }
-    
-    .dark-mode .min-max-card {
-      background-color: var(--reading-card-dark);
-      border: 1px solid var(--border-dark);
-      box-shadow: 0 3px 10px var(--shadow-dark);
-    }
-    
-    .min-max-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    }
-    
-    .dark-mode .min-max-card:hover {
-      box-shadow: 0 5px 15px var(--shadow-dark);
-    }
-    
-    .min-max-card h3 {
-      margin-top: 0;
-      color: #666;
-      font-size: 1rem;
-      margin-bottom: 8px;
-      transition: color 0.5s ease;
-    }
-    
-    .dark-mode .min-max-card h3 {
-      color: #bbb;
-    }
-    
-    .min-value {
-      font-size: 1.6rem;
-      font-weight: bold;
-      margin: 5px 0;
-      transition: color 0.3s ease;
-      color: #0d6efd;
-    }
-    
-    .max-value {
-      font-size: 1.6rem;
-      font-weight: bold;
-      margin: 5px 0;
-      transition: color 0.3s ease;
-      color: #dc3545;
-    }
-    
-    .reset-min-max {
-      background-color: #6c757d;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      padding: 5px 10px;
-      font-size: 0.8rem;
-      cursor: pointer;
-      margin-top: 10px;
-      transition: background-color 0.3s ease;
-    }
-    
-    .reset-min-max:hover {
-      background-color: #5a6268;
-    }
-    
-    .dark-mode .reset-min-max {
-      background-color: #495057;
-    }
-    
-    .dark-mode .reset-min-max:hover {
-      background-color: #343a40;
-    }
     .theme-switch-wrapper {
       display: flex;
       align-items: center;
@@ -1044,3 +1228,11 @@
 .dark-mode .help-text {
   color: var(--footer-text-dark);
 }
+
+.card-header {
+      display: flex;
+      align-items: center;
+      padding: 12px 15px;
+      background: linear-gradient(to right, rgba(13, 110, 253, 0.1), rgba(220, 53, 69, 0.1));
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    }

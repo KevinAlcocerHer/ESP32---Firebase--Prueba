@@ -855,51 +855,6 @@
 .input-group .form-control {
   border-radius: 5px 0 0 5px;
 }
-/* Estilos simples para la sección WiFi */
-  .wifi-config-section {
-    background-color: var(--reading-card-light);
-    border-radius: 10px;
-    padding: 20px;
-    margin: 30px 0;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    border: 1px solid var(--border-light);
-  }
-  
-  .dark-mode .wifi-config-section {
-    background-color: var(--reading-card-dark);
-    border: 1px solid var(--border-dark);
-  }
-  
-  .wifi-icon {
-    margin-right: 8px;
-  }
-  
-  .wifi-status {
-    margin-bottom: 15px;
-  }
-  
-  #wifi-connection-status {
-    font-weight: bold;
-  }
-  
-  #current-ssid {
-    font-weight: bold;
-  }
-  
-  .btn-primary a {
-    color: white;
-    text-decoration: none;
-  }
-  
-  .help-text {
-    margin-top: 15px;
-    font-size: 0.9rem;
-    color: var(--footer-text-light);
-  }
-  
-  .dark-mode .help-text {
-    color: var(--footer-text-dark);
-  }
 
   /* Estilos para la barra de navegación */
 .main-nav {
@@ -997,4 +952,95 @@
   .nav-right {
     order: 3;
   }
+}
+
+/* Estilos para la sección WiFi */
+.wifi-config-section {
+  background-color: var(--reading-card-light);
+  border-radius: 10px;
+  padding: 20px;
+  margin: 30px 0;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--border-light);
+  animation: fadeInUp 0.8s ease-out;
+}
+
+.dark-mode .wifi-config-section {
+  background-color: var(--reading-card-dark);
+  border: 1px solid var(--border-dark);
+  box-shadow: 0 4px 15px var(--shadow-dark);
+}
+
+.wifi-status {
+  margin-bottom: 20px;
+  padding: 15px;
+  background-color: rgba(255, 255, 255, 0.6);
+  border-radius: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.dark-mode .wifi-status {
+  background-color: rgba(30, 30, 42, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.wifi-data-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.dark-mode .wifi-data-row {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.wifi-data-row:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.wifi-label {
+  font-weight: 600;
+  color: var(--text-light);
+}
+
+.dark-mode .wifi-label {
+  color: var(--text-dark);
+}
+
+#wifi-ip, #wifi-mode, #wifi-ssid {
+  font-weight: bold;
+  color: #0d6efd;
+}
+
+.dark-mode #wifi-ip, 
+.dark-mode #wifi-mode, 
+.dark-mode #wifi-ssid {
+  color: #3a71c9;
+}
+
+.config-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 15px;
+}
+
+.btn-primary a {
+  color: white;
+  text-decoration: none;
+}
+
+.help-text {
+  margin-top: 10px;
+  font-size: 0.85rem;
+  color: var(--footer-text-light);
+  text-align: center;
+}
+
+.dark-mode .help-text {
+  color: var(--footer-text-dark);
 }

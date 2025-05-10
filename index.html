@@ -51,37 +51,41 @@
         <span id="connection-text" class="connection-text">Verificando conexión...</span>
       </div>
       
-      <div class="current-readings">
-        <div class="reading-card">
-          <h2>Temperatura</h2>
-          <div id="temp-icon" class="temp-icon">🌡️</div>
-          <div class="reading-value temperature" id="temp-value">--</div>
-          <div>°C</div>
+      <!-- Nueva sección estilo tabla/ficha técnica para temperaturas -->
+      <section class="temp-data-card">
+        <div class="card-header">
+          <div class="header-icon">📊</div>
+          <div class="header-title">Lecturas del sensores</div>
+        </div>
+        <div class="temp-data-row">
+          <div class="temp-data-label">Temperatura Mínima:</div>
+          <div class="temp-data-value min-temp" id="min-temp">-- °C</div>
         </div>
         
-        <div class="reading-card">
-          <h2>Humedad</h2>
-          <div class="temp-icon">💧</div>
-          <div class="reading-value humidity" id="humidity-value">--</div>
-          <div>%</div>
-        </div>
-      </div>
-      
-      <div class="min-max-readings">
-        <div class="min-max-card">
-          <h3>Temperatura Mínima</h3>
-          <div class="min-value" id="min-temp">--</div>
-          <div>°C</div>
+        <div class="temp-data-row">
+          <div class="temp-data-label">Temperatura Actual:</div>
+          <div class="temp-data-value current-temp" id="temp-value">-- °C</div>
         </div>
         
-        <div class="min-max-card">
-          <h3>Temperatura Máxima</h3>
-          <div class="max-value" id="max-temp">--</div>
-          <div>°C</div>
+        <div class="temp-data-row">
+          <div class="temp-data-label">Temperatura Máxima:</div>
+          <div class="temp-data-value max-temp" id="max-temp">-- °C</div>
         </div>
         
-        <button id="reset-min-max" class="reset-min-max">Reiniciar Min/Max</button>
-      </div>
+        <div class="temp-data-row">
+          <div class="temp-data-label">Humedad:</div>
+          <div class="temp-data-value humidity" id="humidity-value">-- %</div>
+        </div>
+        
+        <div class="temp-data-row action-row">
+          <div class="temp-data-label"></div>
+          <div class="temp-data-value">
+            <button id="reset-min-max" class="reset-min-max-btn">
+              <span>🔄</span> Reiniciar Min/Max
+            </button>
+          </div>
+        </div>
+      </section>
       
       <div id="status-indicator" class="status-indicator status-ok">Estado: OK</div>
       
@@ -201,8 +205,6 @@
       <p>ESP32 + Firebase + Sensor DHT + Telegram</p>
     </div>
   </div>
-
-
 
 <script src="temperatura.js"></script>
 <script src="configWiFi.js"></script>

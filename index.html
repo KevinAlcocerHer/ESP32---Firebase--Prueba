@@ -169,25 +169,42 @@
   <h2><span class="wifi-icon">📶</span> Configuración WiFi</h2>
   
   <div class="wifi-status">
-    <p>Dispositivo: <span id="wifi-connection-status">ESP32</span></p>
+    <div class="wifi-data-row">
+      <span class="wifi-label">Dispositivo:</span>
+      <span id="wifi-connection-status">ESP32</span>
+    </div>
+    <div class="wifi-data-row">
+      <span class="wifi-label">Dirección IP:</span>
+      <span id="wifi-ip">192.168.1.92</span>
+    </div>
+    <div class="wifi-data-row">
+      <span class="wifi-label">Modo:</span>
+      <span id="wifi-mode">STA (Station)</span>
+    </div>
+    <div class="wifi-data-row">
+      <span class="wifi-label">Red (SSID):</span>
+      <span id="wifi-ssid">INFINITUM6A06</span>
+    </div>
   </div>
   
   <div class="config-actions">
     <button id="config-wifi-btn" class="btn btn-primary">
-      <span>⚙️</span> <a href="http://192.168.1.92/#">Configurar WiFi</a>
+      <span>⚙️</span> <a href="http://192.168.1.92/">Configurar WiFi</a>
     </button>
     <p class="help-text">
       Cambia la configuración del WiFi del ESP32
     </p>
   </div>
+</div>
 
     <div class="footer">
-      <p>ESP32 + Firebase + Sensor DHT</p>
+      <p>ESP32 + Firebase + Sensor DHT + Telegram</p>
     </div>
   </div>
 
 
 
 <script src="temperatura.js"></script>
+<script src="configWiFi.js"></script>
 </body>
 </html>

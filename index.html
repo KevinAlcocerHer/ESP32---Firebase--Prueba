@@ -4,10 +4,16 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Monitor de Temperatura y Humedad</title>
+  <!-- Favicon para la pestaña del navegador -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌡️</text></svg>" type="image/svg+xml">
+  
+  <!-- Favicons para diferentes dispositivos y plataformas -->
+  <link rel="apple-touch-icon" sizes="180x180" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌡️</text></svg>">
+  <meta name="theme-color" content="#7bc6cc">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.23.0/firebase-app-compat.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.23.0/firebase-database-compat.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
-  <link rel="stylesheet" href="temperatura.css">
+  <link rel="stylesheet" href="styles/temperatura.css">
 </head>
   <body class="temp-mild">
     <nav class="main-nav">
@@ -84,6 +90,38 @@
               <span>🔄</span> Reiniciar Min/Max
             </button>
           </div>
+        </div>
+      </section>
+
+      <section class="history-data-card">
+        <div class="card-header">
+          <div class="header-icon">📅</div>
+          <div class="header-title">Historial de Temperaturas (48 horas)</div>
+        </div>
+        <div class="table-container">
+          <table class="history-table" id="history-table">
+            <thead>
+              <tr>
+                <th>Fecha/Hora</th>
+                <th>Temperatura</th>
+                <th>Humedad</th>
+              </tr>
+            </thead>
+            <tbody id="history-table-body">
+              <!-- Las filas de la tabla se generarán dinámicamente con JavaScript -->
+              <tr>
+                <td colspan="3" class="loading-data">Cargando datos históricos...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="table-controls">
+          <button id="refresh-history" class="refresh-btn">
+            <span class="refresh-icon">🔄</span> Actualizar historial
+          </button>
+          <button id="export-history" class="export-btn">
+            <span>📊</span> Exportar datos
+          </button>
         </div>
       </section>
       
@@ -208,5 +246,6 @@
 
 <script src="temperatura.js"></script>
 <script src="configWiFi.js"></script>
+<script src="Historial.js"></script>
 </body>
 </html>

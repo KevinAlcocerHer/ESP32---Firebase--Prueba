@@ -1,0 +1,210 @@
+    <!DOCTYPE html>
+    <html lang="es">
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión - ESP32 Monitor</title>
+    <!-- Favicon para la pestaña del navegador -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌡️</text></svg>" type="image/svg+xml">
+    
+    <!-- Favicons para diferentes dispositivos y plataformas -->
+    <link rel="apple-touch-icon" sizes="180x180" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌡️</text></svg>">
+    <meta name="theme-color" content="#7bc6cc">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.23.0/firebase-app-compat.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.23.0/firebase-database-compat.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.23.0/firebase-auth-compat.min.js"></script>
+    <link rel="stylesheet" href="temperatura.css">
+    <style>
+        .login-container {
+        max-width: 400px;
+        margin: 50px auto;
+        padding: 25px;
+        background-color: var(--reading-card-light);
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        border: 1px solid var(--border-light);
+        animation: fadeInUp 0.8s ease-out;
+        }
+        
+        .dark-mode .login-container {
+        background-color: var(--reading-card-dark);
+        border: 1px solid var(--border-dark);
+        }
+        
+        .login-header {
+        text-align: center;
+        margin-bottom: 25px;
+        }
+        
+        .login-form .form-group {
+        margin-bottom: 20px;
+        }
+        
+        .login-form label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 500;
+        }
+        
+        .login-form input {
+        width: 100%;
+        padding: 12px;
+        border-radius: 5px;
+        border: 1px solid #ced4da;
+        font-size: 1rem;
+        transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        
+        .dark-mode .login-form input {
+        background-color: rgba(30, 30, 42, 0.8);
+        border-color: rgba(255, 255, 255, 0.2);
+        color: #f0f0f0;
+        }
+        
+        .login-form input:focus {
+        border-color: #0d6efd;
+        box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.25);
+        outline: none;
+        }
+        
+        .login-btn {
+        width: 100%;
+        padding: 12px;
+        background-color: #0d6efd;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 1rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.2s;
+        }
+        
+        .login-btn:hover {
+        background-color: #0b5ed7;
+        transform: translateY(-2px);
+        }
+        
+        .login-btn:active {
+        transform: translateY(0);
+        }
+        
+        .dark-mode .login-btn {
+        background-color: #2d63b7;
+        }
+        
+        .dark-mode .login-btn:hover {
+        background-color: #3a71c9;
+        }
+        
+        .login-message {
+        margin-top: 15px;
+        padding: 10px;
+        border-radius: 5px;
+        text-align: center;
+        font-size: 0.9rem;
+        display: none;
+        }
+        
+        .login-error {
+        background-color: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+        }
+        
+        .dark-mode .login-error {
+        background-color: #3b1c1f;
+        color: #dca0a6;
+        border: 1px solid #57262b;
+        }
+        
+        .login-success {
+        background-color: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+        }
+        
+        .dark-mode .login-success {
+        background-color: #1e3a2d;
+        color: #8fcea8;
+        border: 1px solid #2c573c;
+        }
+        
+        .login-footer {
+        margin-top: 25px;
+        text-align: center;
+        font-size: 0.85rem;
+        color: var(--footer-text-light);
+        }
+        
+        .dark-mode .login-footer {
+        color: var(--footer-text-dark);
+        }
+        
+        .fade-in {
+        animation: fadeIn 0.5s ease-in;
+        }
+        
+        @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+        }
+    </style>
+    </head>
+    <body class="temp-mild">
+    <nav class="main-nav">
+        <div class="nav-container">
+        <div class="nav-brand">
+            <a href="#" class="nav-logo">ESP32</a>
+        </div>
+        <div class="nav-title">
+            Monitor de Temperatura
+        </div>
+        <div class="nav-right">
+            <div class="theme-switch-wrapper">
+            <em>Modo</em>
+            <label class="theme-switch" for="checkbox">
+                <input type="checkbox" id="checkbox" />
+                <span class="slider"></span>
+            </label>
+            </div>
+        </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="login-container">
+        <div class="login-header">
+            <h1>Iniciar Sesión</h1>
+            <p>Accede al Monitor de Temperatura y Humedad</p>
+        </div>
+        
+        <form id="login-form" class="login-form">
+            <div class="form-group">
+            <label for="email">Correo Electrónico</label>
+            <input type="email" id="email" name="email" required>
+            </div>
+            
+            <div class="form-group">
+            <label for="password">Contraseña</label>
+            <input type="password" id="password" name="password" required>
+            </div>
+            
+            <button type="submit" class="login-btn">Iniciar Sesión</button>
+        </form>
+        
+        <div id="login-message" class="login-message"></div>
+        
+        <div class="login-footer">
+            <p>...</p>
+        </div>
+        </div>
+        
+        <div class="footer">
+        <p>ESP32 + Firebase + Sensor DHT + Telegram</p>
+        </div>
+    </div>
+
+    <script src="login.js"></script>
+    </body>
+    </html>

@@ -13,6 +13,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.23.0/firebase-app-compat.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.23.0/firebase-database-compat.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.23.0/firebase-auth-compat.min.js"></script>
   <link rel="stylesheet" href="temperatura.css">
 </head>
   <body class="temp-mild">
@@ -24,7 +25,14 @@
         <div class="nav-title">
           Monitoreo de Temperatura
         </div>
-        <div class="nav-right">
+          <div class="nav-right">
+            <div class="nav-right">
+          <div class="user-info">
+            <span class="user-email" id="user-email"></span>
+            <button id="logout-btn" class="logout-btn">
+              <span>🚪</span> Salir
+            </button>
+          </div>
           <div class="theme-switch-wrapper">
             <em>Modo</em>
             <label class="theme-switch" for="checkbox">
@@ -118,9 +126,6 @@
         <div class="table-controls">
           <button id="refresh-history" class="refresh-btn">
             <span class="refresh-icon">🔄</span> Actualizar historial
-          </button>
-          <button id="export-history" class="export-btn">
-            <span>📊</span> Exportar datos
           </button>
         </div>
       </section>

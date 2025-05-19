@@ -1440,3 +1440,83 @@
         margin-bottom: 5px;
       }
     }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      margin-right: 15px;
+    }
+
+    .user-email {
+      font-size: 0.9rem;
+      color: var(--text-light);
+      margin-right: 10px;
+      max-width: 150px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .dark-mode .user-email {
+      color: var(--text-dark);
+    }
+
+    .logout-btn {
+      background-color: #6c757d;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      padding: 5px 10px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    .logout-btn:hover {
+      background-color: #5a6268;
+      transform: translateY(-2px);
+    }
+
+    .logout-btn:active {
+      transform: translateY(0);
+    }
+
+    .dark-mode .logout-btn {
+      background-color: #495057;
+    }
+
+    .dark-mode .logout-btn:hover {
+      background-color: #343a40;
+    }
+
+    @media (max-width: 768px) {
+      .nav-container {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+      }
+      
+      .nav-brand, .nav-title, .nav-right {
+        width: 100%;
+        text-align: center;
+      }
+      
+      .nav-right {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .user-info {
+        margin-right: 0;
+        margin-bottom: 10px;
+        flex-direction: column;
+      }
+      
+      .user-email {
+        margin-right: 0;
+        margin-bottom: 5px;
+      }
+    }

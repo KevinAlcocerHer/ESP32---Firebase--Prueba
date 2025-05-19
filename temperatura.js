@@ -953,3 +953,46 @@ try {
   }, 500);
   errorMessage.textContent = "Error al conectar con Firebase: " + error.message;
 }
+
+// Verificar autenticación
+firebase.auth().onAuthStateChanged(function(user) {
+  if (!user) {
+    // No hay usuario autenticado, redirigir al login
+    window.location.href = 'login.html';
+  } else {
+    // Usuario autenticado, actualizar información en la UI
+    const userEmailElement = document.getElementById('user-email');
+    if (userEmailElement) {
+      userEmailElement.textContent = user.email;
+    }
+    
+    // Mostrar el contenido cuando el usuario está autenticado
+    loadingElement.style.opacity = 0;
+    setTimeout(() => {
+      loadingElement.style.display = 'none';
+      dashboardContent.style.display = 'block';
+      setTimeout(() => {
+        dashboardContent.style.opacity = 1;
+      }, 100);
+    }, 500);
+  }
+});
+
+// Agregar función para cerrar sesión
+function logout() {
+  firebase.auth().signOut().then(() => {
+    // Cerrar sesión exitoso
+    console.log("Sesión cerrada correctamente");
+    window.location.href = 'login.html';
+  }).catch((error) => {
+    // Error al cerrar sesión
+    console.error("Error al cerrar sesión:", error);
+    alert("Error al cerrar sesión: " + error.message);
+  });
+}
+
+// Agregar evento al botón de logout
+const logoutButton = document.getElementById('logout-btn');
+if (logoutButton) {
+  logoutButton.addEventListener('click', logout);
+}

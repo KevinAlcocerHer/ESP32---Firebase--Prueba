@@ -5,7 +5,6 @@
     // Referencias a los elementos DOM de la tabla
     const historyTableBody = document.getElementById('history-table-body');
     const refreshHistoryButton = document.getElementById('refresh-history');
-    const exportHistoryButton = document.getElementById('export-history');
 
     // Función para inicializar y cargar datos del historial
     function initializeHistoryTable() {
@@ -177,39 +176,6 @@
         .catch((error) => {
         console.error("Error al consultar registros antiguos:", error);
         });
-    }
-
-    // Función para exportar datos a CSV
-    function exportHistoryToCSV() {
-    if (temperatureHistory.length === 0) {
-        alert("No hay datos para exportar");
-        return;
-    }
-    
-    // Cabecera del CSV
-    let csvContent = "Fecha,Hora,Temperatura (°C),Humedad (%)\n";
-    
-    // Contenido CSV
-    temperatureHistory.forEach((entry) => {
-        const date = new Date(entry.timestamp);
-        const dateStr = date.toLocaleDateString();
-        const timeStr = date.toLocaleTimeString();
-        
-        csvContent += `${dateStr},${timeStr},${entry.temperature.toFixed(1)},${entry.humidity.toFixed(1)}\n`;
-    });
-    
-    // Crear blob y descargarlo
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    
-    link.setAttribute("href", url);
-    link.setAttribute("download", `temperatura_historico_${new Date().toLocaleDateString()}.csv`);
-    link.style.display = "none";
-    
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
     }
 
     // Event listeners

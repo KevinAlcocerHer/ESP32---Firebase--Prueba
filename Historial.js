@@ -8,6 +8,24 @@
 
     // Función para inicializar y cargar datos del historial
     function initializeHistoryTable() {
+    // Verificar si el usuario está autenticado
+    const user = firebase.auth().currentUser;
+    if (!user) {
+        historyTableBody.innerHTML = `
+        <tr>
+            <td colspan="3" class="loading-data">Debe iniciar sesión para ver el historial.</td>
+        </tr>
+        `;
+        return;
+    }
+    
+    // Mostrar mensaje de carga
+    historyTableBody.innerHTML = `
+        <tr>
+        <td colspan="3" class="loading-data">Cargando datos históricos...</td>
+        </tr>
+    `;
+    
     // Referencia a la base de datos de Firebase
     const historyRef = firebase.database().ref('temperatureHistory');
     
@@ -111,6 +129,12 @@
 
     // Función para actualizar un nuevo registro en el historial
     function updateHistoryRecord() {
+    // Verificar si el usuario está autenticado
+    if (!firebase.auth().currentUser) {
+        console.log("No se puede actualizar el historial - usuario no autenticado");
+        return;
+    }
+    
     // Solo guardar datos cada 10 minutos para no sobrecargar la BD
     const currentTemp = parseFloat(tempValue.textContent);
     const currentHumidity = parseFloat(humidityValue.textContent);
@@ -148,6 +172,12 @@
 
     // Función para borrar registros antiguos (mantener solo 48 horas)
     function cleanupOldRecords() {
+    // Verificar si el usuario está autenticado
+    if (!firebase.auth().currentUser) {
+        console.log("No se pueden limpiar registros antiguos - usuario no autenticado");
+        return;
+    }
+    
     const fortyEightHoursAgo = Date.now() - (48 * 60 * 60 * 1000);
     
     // Referencia a registros antiguos
@@ -193,24 +223,63 @@
     }, 1000);
     });
 
+    // Verificar si el botón de exportar existe
+    const exportHistoryButton = document.getElementById('export-history');
+    if (exportHistoryButton) {
     exportHistoryButton.addEventListener('click', exportHistoryToCSV);
+    }
 
-    // Inicialización
+    // Función para exportar historial a CSV
+    function exportHistoryToCSV() {
+    if (temperatureHistory.length === 0) {
+        alert('No hay datos para exportar');
+        return;
+    }
+    
+    let csvContent = "data:text/csv;charset=utf-8,";
+    csvContent += "Fecha,Temperatura (°C),Humedad (%)\n";
+    
+    temperatureHistory.forEach(entry => {
+        const date = new Date(entry.timestamp);
+        const dateFormatted = date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
+        csvContent += `${dateFormatted},${entry.temperature.toFixed(1)},${entry.humidity.toFixed(1)}\n`;
+    });
+    
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "historial_temperatura.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    }
+
+    // Inicialización - NO inicializar inmediatamente, esperar autenticación
     document.addEventListener('DOMContentLoaded', function() {
-    // Inicializar la tabla después de un breve retraso para permitir que Firebase se cargue
-    setTimeout(() => {
+    // Esperar a que la autenticación se resuelva
+    firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+        // Inicializar solo si hay un usuario autenticado
         initializeHistoryTable();
-    }, 2000);
-    
-    // Modificar la función updateCurrentValues para actualizar el historial
-    const originalUpdateCurrentValues = updateCurrentValues;
-    updateCurrentValues = function(temp, humidity, status) {
-        originalUpdateCurrentValues(temp, humidity, status);
         
-        // Actualizar historial con nueva lectura
-        updateHistoryRecord();
-    };
-    
-    // Programar limpieza de registros antiguos (cada hora)
-    setInterval(cleanupOldRecords, 60 * 60 * 1000);
+        // Modificar la función updateCurrentValues para actualizar el historial
+        const originalUpdateCurrentValues = updateCurrentValues;
+        updateCurrentValues = function(temp, humidity, status) {
+            originalUpdateCurrentValues(temp, humidity, status);
+            
+            // Actualizar historial con nueva lectura
+            updateHistoryRecord();
+        };
+        
+        // Programar limpieza de registros antiguos (cada hora)
+        setInterval(cleanupOldRecords, 60 * 60 * 1000);
+        } else {
+        // Mostrar mensaje de login requerido
+        historyTableBody.innerHTML = `
+            <tr>
+            <td colspan="3" class="loading-data">Debe iniciar sesión para ver el historial.</td>
+            </tr>
+        `;
+        }
+    });
     });

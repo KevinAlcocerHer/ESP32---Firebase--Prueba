@@ -787,36 +787,43 @@ try {
   window.sensorChart = new Chart(ctx, chartConfig);
   
   // Función para actualizar el gráfico con nuevos datos
-  function updateChartData(timestamp) {
-    const now = new Date();
-    const timeStr = now.getHours().toString().padStart(2, '0') + ':' + 
-                   now.getMinutes().toString().padStart(2, '0');
+  function updateChartData() {
+  // Usar los datos del historial de la tabla en lugar de datos simulados
+  if (temperatureHistory && temperatureHistory.length > 0) {
+    // Tomar los últimos 20 registros para la gráfica
+    const recentData = temperatureHistory.slice(0, 20).reverse(); // Reverse para mostrar cronológicamente
     
-    // Guardar datos históricos
-    historicalData.timestamps.push(timestamp);
-    historicalData.temperatures.push(parseFloat(tempValue.textContent));
-    historicalData.humidities.push(parseFloat(humidityValue.textContent));
-    
-    // Limitamos a los últimos 20 puntos de datos para mejor visualización
-    if (historicalData.timestamps.length > 20) {
-      historicalData.timestamps.shift();
-      historicalData.temperatures.shift();
-      historicalData.humidities.shift();
-    }
-    
-    // Actualizar datos del gráfico
-    chartData.labels = historicalData.timestamps.map(ts => {
-      const d = new Date(ts);
+    // Actualizar datos del gráfico con datos reales del historial
+    chartData.labels = recentData.map(entry => {
+      const d = new Date(entry.timestamp);
       return d.getHours().toString().padStart(2, '0') + ':' + 
             d.getMinutes().toString().padStart(2, '0');
     });
     
-    chartData.datasets[0].data = historicalData.temperatures;
-    chartData.datasets[1].data = historicalData.humidities;
+    chartData.datasets[0].data = recentData.map(entry => entry.temperature);
+    chartData.datasets[1].data = recentData.map(entry => entry.humidity);
     
     // Actualizar el gráfico
     window.sensorChart.update();
   }
+}
+
+// Modificar la función resetChart para usar datos del historial
+function resetChart() {
+  // Añadir animación al botón
+  const refreshBtn = document.getElementById('refresh-chart');
+  const refreshIcon = refreshBtn.querySelector('.refresh-icon');
+  refreshIcon.style.animation = 'spin 1s linear';
+  
+  // Actualizar gráfico con datos del historial
+  updateChartData();
+  
+  // Quitar la animación después de un tiempo
+  setTimeout(() => {
+    refreshIcon.style.animation = '';
+  }, 1000);
+}
+
   
   // Escuchar cambios en tiempo real desde Firebase
   sensorRef.on('value', (snapshot) => {
@@ -996,3 +1003,36 @@ const logoutButton = document.getElementById('logout-btn');
 if (logoutButton) {
   logoutButton.addEventListener('click', logout);
 }
+
+// Funciones para los modales
+function openModal(modalId) {
+  document.getElementById(modalId).style.display = 'block';
+  document.body.style.overflow = 'hidden'; // Prevenir scroll del body
+}
+
+function closeModal(modalId) {
+  document.getElementById(modalId).style.display = 'none';
+  document.body.style.overflow = 'auto'; // Restaurar scroll del body
+}
+
+// Cerrar modal al hacer click fuera de él
+window.onclick = function(event) {
+  if (event.target.classList.contains('modal')) {
+    event.target.style.display = 'none';
+    document.body.style.overflow = 'auto';
+  }
+}
+
+// Cerrar modal con la tecla Escape
+document.addEventListener('keydown', function(event) {
+  if (event.key === 'Escape') {
+    const modals = document.querySelectorAll('.modal');
+    modals.forEach(modal => {
+      if (modal.style.display === 'block') {
+        modal.style.display = 'none';
+        document.body.style.overflow = 'auto';
+      }
+    });
+  }
+});
+

@@ -65,6 +65,264 @@
         <span id="connection-text" class="connection-text">Verificando conexión...</span>
       </div>
       
+      <!-- Nueva sección de Funcionamiento -->
+    <div class="funcionamiento-section">
+      <h2>⚙️ Detalles del Sistema</h2>
+      
+      <div class="descripcion-text">
+        <strong>Descripción:</strong> Este es un sistema IoT basado en ESP32 que integra múltiples componentes para monitoreo de temperatura y humedad con alertas inteligentes, gestión WiFi avanzada y visualización en tiempo real.
+      </div>
+      
+      <div class="info-buttons-container">
+        <button class="info-btn" onclick="openModal('hardwareModal')">
+          🔧 Hardware Utilizado
+        </button>
+        <button class="info-btn" onclick="openModal('funcionalidadesModal')">
+          ⚡ Etapas de Inicialización
+        </button>
+        <button class="info-btn" onclick="openModal('alertasModal')">
+          🔔 Sistema de Alertas
+        </button>
+        <button class="info-btn" onclick="openModal('firebaseModal')">
+          🔥 Integración Firebase
+        </button>
+        <button class="info-btn" onclick="openModal('controlModal')">
+          🎮 Control Manual
+        </button>
+        <button class="info-btn" onclick="openModal('ledsModal')">
+          💡 LEDs de Estado
+        </button>
+        <button class="info-btn" onclick="openModal('apInstructivoModal')">
+          🌐 Instructivo del Access Point (AP)
+        </button>
+      </div>
+    </div>
+
+    <!-- Modales para mostrar información -->
+    <!-- Modal Hardware -->
+    <div id="hardwareModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeModal('hardwareModal')">&times;</span>
+        <div class="modal-header">
+          <h3>🔧 Hardware Utilizado</h3>
+        </div>
+        <div class="modal-body">
+          <ul>
+            <li><strong>ESP32:</strong> Microcontrolador principal.</li>
+            <li><strong>DHT11:</strong> Sensor de temperatura y humedad.</li>
+            <li><strong>Display 7 segmentos doble:</strong> Visualización numérica.</li>
+            <li><strong>Buzzer:</strong> Alertas sonoras.</li>
+            <li><strong>LEDs de estado:</strong>
+              <ul>
+                <li>LED principal WiFi.</li>
+                <li>LED Firebase.</li>
+                <li>LED de envio de datos.</li>
+              </ul>
+            </li>
+            <li><strong>Botón:</strong> Para control manual del AP (Boot Button).</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Funcionalidades -->
+    <div id="funcionalidadesModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeModal('funcionalidadesModal')">&times;</span>
+        <div class="modal-header">
+          <h3>⚡ Etapas de Inicialización</h3>
+        </div>
+        <div class="modal-body">
+          <div class="feature-section">
+            <h4>Sistema de Inicialización por Etapas</h4>
+            <p>El sistema muestra códigos numéricos en el display durante el arranque:</p>
+            <ul>
+              <li><strong>01:</strong> WiFi conectado.</li>
+              <li><strong>02:</strong> Firebase conectado.</li>
+              <li><strong>03:</strong> Sensor iniciado.</li>
+              <li><strong>99:</strong> Sistema funcionando (muestra temperatura).</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Alertas -->
+    <div id="alertasModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeModal('alertasModal')">&times;</span>
+        <div class="modal-header">
+          <h3>🔔 Sistema de Alertas Inteligentes</h3>
+        </div>
+        <div class="modal-body">
+          <ul>
+            <li><strong>Umbral configurable:</strong> Temperatura límite personalizable desde Firebase.</li>
+            <li><strong>Cooldown ajustable:</strong> Se ajusta de acuerdo al tiempo entre alertas que tiene definido en la seccion de Telegram (solo reconoce segundos).</li>
+            <li><strong>Patrón sonoro:</strong> 3 beeps cortos + 2 beeps largos.</li>
+            <li><strong>Control remoto:</strong> Activar/desactivar desde Firebase.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Firebase -->
+    <div id="firebaseModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeModal('firebaseModal')">&times;</span>
+        <div class="modal-header">
+          <h3>🔥 Integración Firebase</h3>
+        </div>
+        <div class="modal-body">
+          <ul>
+            <li><strong>Almacenamiento de datos:</strong> Temperatura, humedad, estado del sensor.</li>
+            <li><strong>Configuración remota:</strong> Umbral de alertas, cooldown, activación.</li>
+            <li><strong>Información de red:</strong> Modo de conexión, SSID, IP.</li>
+            <li><strong>Estado del sistema:</strong> Alertas activas, configuración actual.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Control -->
+    <div id="controlModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeModal('controlModal')">&times;</span>
+        <div class="modal-header">
+          <h3>🎮 Control Manual</h3>
+        </div>
+        <div class="modal-body">
+          <div class="feature-section">
+            <h4>Presión Corta (< 3 segundos)</h4>
+            <p><strong>Función:</strong> Activar modo Access Point.</p>
+            <ul>
+              <li>El LED principal parpadea 3 veces.</li>
+              <li>Se crea una red WiFi temporal.</li>
+              <li>Display muestra "AP".</li>
+              <li>Sonido de confirmación (2 beeps).</li>
+            </ul>
+          </div>
+          <div class="feature-section">
+            <h4>Presión Larga (≥ 3 segundos).</h4>
+            <p><strong>Función:</strong> Factory Reset completo.</p>
+            <ul>
+              <li>LEDs parpadean dramáticamente 10 veces.</li>
+              <li>5 beeps de alerta del buzzer.</li>
+              <li>Se borran todas las configuraciones.</li>
+              <li>El ESP32 se reinicia automáticamente.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal LEDs -->
+    <div id="ledsModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeModal('ledsModal')">&times;</span>
+        <div class="modal-header">
+          <h3>💡 LEDs de Estado</h3>
+        </div>
+        <div class="modal-body">
+          <div class="feature-section">
+            <h4>LED Principal - Estado WiFi</h4>
+            <ul>
+              <li><strong>Encendido fijo:</strong> WiFi conectado o modo AP activo.</li>
+              <li><strong>Parpadeo:</strong> Sin conexión WiFi, intentando reconectar.</li>
+              <li><strong>Parpadeo rápido:</strong> Durante presión larga del botón (factory reset).</li>
+            </ul>
+          </div>
+          <div class="feature-section">
+            <h4>LED Firebase - Estado Firebase</h4>
+            <ul>
+              <li><strong>Encendido fijo:</strong> Firebase conectado y funcionando.</li>
+              <li><strong>Parpadeo:</strong> Firebase desconectado o error de conexión.</li>
+            </ul>
+          </div>
+          <div class="feature-section">
+            <h4>LED Datos - Envio de datos a Firebase</h4>
+            <ul>
+              <li><strong>Parpadeo:</strong> Envia los datos de la temperatura a Firebase cada 10 segundos.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Instructivo AP -->
+    <div id="apInstructivoModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeModal('apInstructivoModal')">&times;</span>
+        <div class="modal-header">
+          <h3>🌐 Instructivo del Access Point (AP)</h3>
+        </div>
+        <div class="modal-body">
+          <div class="feature-section">
+            <h4>Cuándo se Activa el Modo AP</h4>
+            <p><strong>Automáticamente:</strong></p>
+            <ul>
+              <li>Al encender sin credenciales WiFi válidas.</li>
+              <li>Cuando falla la conexión a la red guardada.</li>
+            </ul>
+            <p><strong>Manualmente:</strong></p>
+            <ul>
+              <li>Presión corta del botón.</li>
+              <li>Desde la interfaz web (botón "Activar modo AP").</li>
+            </ul>
+          </div>
+          
+          <div class="feature-section">
+            <h4>Pasos para Conectarse</h4>
+            <p><strong>1. Buscar la red WiFi:</strong></p>
+            <ul>
+              <li>Nombre: <code>ESP_Config_0000.</code></li>
+              <li>Contraseña: "<code>12345678</code>".</li>
+            </ul>
+            
+            <p><strong>2. Conectar dispositivo:</strong></p>
+            <ul>
+              <li>Usar teléfono, tablet o computadora.</li>
+              <li>Conectar a la red del ESP32.</li>
+            </ul>
+            
+            <p><strong>3. Abrir navegador:</strong></p>
+            <ul>
+              <li>Ir a: <code>http://192.168.4.1</code></li>
+              <li>Se abrirá la interfaz de configuración.</li>
+            </ul>
+            
+            <p><strong>4. Configurar nueva red:</strong></p>
+            <ul>
+              <li>Ver lista de redes disponibles con intensidad de señal.</li>
+              <li>Hacer clic en la red deseada.</li>
+              <li>Introducir contraseña.</li>
+              <li>Presionar "Conectar".</li>
+            </ul>
+            
+            <p><strong>5. Confirmar conexión:</strong></p>
+            <ul>
+              <li>Esperar 15 segundos.</li>
+              <li>El ESP32 intentará conectarse.</li>
+              <li>Si es exitoso, volverá al modo normal.</li>
+            </ul>
+          </div>
+          
+          <div class="feature-section">
+            <h4>Salir del Modo AP</h4>
+            <p><strong>Automáticamente:</strong></p>
+            <ul>
+              <li>Después de configurar exitosamente una nueva red.</li>
+              <li>El display dejará de mostrar "AP".</li>
+            </ul>
+            <p><strong>Manualmente:</strong></p>
+            <ul>
+              <li>Botón "Salir del modo AP" en la interfaz web.</li>
+              <li>El ESP32 intentará reconectarse a la red guardada.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
       <!-- Nueva sección estilo tabla/ficha técnica para temperaturas -->
       <section class="temp-data-card">
         <div class="card-header">
@@ -132,16 +390,6 @@
       
       <div id="status-indicator" class="status-indicator status-ok">Estado: OK</div>
       
-      <div class="chart-container">
-        <div class="chart-controls">
-          <button id="refresh-chart" class="refresh-btn">
-            <span class="refresh-icon">🔄</span> Actualizar gráfica
-          </button>
-        </div>
-        <canvas id="sensorChart"></canvas>
-      </div>
-      
-      <div class="last-update" id="last-update">Última actualización: --</div>
       
   <!-- Sección de Configuración de Alertas de Telegram con el cambio solicitado -->
   <div class="telegram-config-section">
@@ -214,9 +462,8 @@
 
   <div class="wifi-config-section">
   <h2><span class="wifi-icon">📶</span> Configuración WiFi</h2>
-  <strong>Intrucciones de configuracion: </strong>
       <p>    
-    Para configurar de manera correcta el dispositivo movil, computadora, tablet, etc, deben estar en la misma zona de Wifi que el ESP32
+        Las instrucciones para configurar la red estan en la parte superior.
     </p>
   <div class="wifi-status">
     <div class="wifi-data-row">
@@ -247,6 +494,15 @@
   </div>
 </div>
 
+      <div class="chart-container">
+        <div class="chart-controls">
+          <button id="refresh-chart" class="refresh-btn">
+            <span class="refresh-icon">🔄</span> Actualizar gráfica
+          </button>
+        </div>
+        <canvas id="sensorChart"></canvas>
+      </div>
+      <br>
     <div class="footer">
       <p>ESP32 + Firebase + Sensor DHT + Telegram</p>
     </div>

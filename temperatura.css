@@ -1615,6 +1615,8 @@
 
 /* Modificación específica para los modales - Reemplazar la sección modal existente */
 
+/* Modificación específica para los modales - Reemplazar la sección modal existente */
+
 .modal {
   display: none;
   position: fixed;
@@ -1627,8 +1629,8 @@
   background-color: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(5px);
   animation: fadeIn 0.3s ease-out;
-  /* Ajustar para que no cuente el nav */
-  padding-top: 80px; /* Altura aproximada del nav + margen */
+  /* Ajustar para que no cuente el nav - versión mejorada para móvil */
+  padding-top: 80px; /* Altura aproximada del nav + margen para desktop */
 }
 
 .modal-content {
@@ -1638,7 +1640,7 @@
   border-radius: 12px;
   width: 90%;
   max-width: 800px;
-  max-height: calc(100vh - 160px); /* Restar altura del nav y márgenes */
+  max-height: calc(100vh - 160px); /* Restar altura del nav y márgenes para desktop */
   overflow-y: auto;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
   animation: slideIn 0.3s ease-out;
@@ -1652,29 +1654,79 @@
   background-color: var(--card-bg-dark);
 }
 
-/* Para pantallas más pequeñas, ajustar el espaciado */
+/* Para dispositivos móviles */
 @media (max-width: 768px) {
   .modal {
-    padding-top: 100px; /* Más espacio en móviles donde el nav puede ser más alto */
+    /* Aumentar padding-top para dar más espacio al nav en móviles */
+    padding-top: 140px; /* Más espacio en móviles donde el nav puede ocupar más altura */
   }
   
   .modal-content {
     width: 95%;
     padding: 15px;
-    max-height: calc(100vh - 140px);
+    /* Ajustar altura máxima para móviles considerando el nav más alto */
+    max-height: calc(100vh - 180px);
     margin-top: 10px;
+    /* Hacer el modal más compacto en móviles */
+    border-radius: 8px;
+  }
+  
+  /* Hacer el texto del modal más legible en móviles */
+  .modal-body {
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+  
+  .modal-header h3 {
+    font-size: 1.2rem;
   }
 }
 
-/* Para pantallas muy pequeñas en altura */
+/* Para pantallas muy pequeñas o en orientación horizontal */
+@media (max-width: 480px) {
+  .modal {
+    padding-top: 120px;
+  }
+  
+  .modal-content {
+    width: 98%;
+    padding: 12px;
+    max-height: calc(100vh - 160px);
+    margin-top: 5px;
+  }
+}
+
+/* Para pantallas muy pequeñas en altura (landscape en móviles) */
 @media (max-height: 600px) {
   .modal {
-    padding-top: 60px;
+    padding-top: 80px;
   }
   
   .modal-content {
     max-height: calc(100vh - 120px);
     margin-top: 10px;
+  }
+}
+
+/* Para pantallas muy pequeñas en altura Y ancho (móviles en landscape) */
+@media (max-height: 600px) and (max-width: 768px) {
+  .modal {
+    padding-top: 60px;
+  }
+  
+  .modal-content {
+    max-height: calc(100vh - 100px);
+    margin-top: 5px;
+    padding: 10px;
+  }
+  
+  .modal-header {
+    margin-bottom: 15px;
+    padding-bottom: 8px;
+  }
+  
+  .modal-body {
+    font-size: 0.85rem;
   }
 }
 
@@ -1700,6 +1752,7 @@
   right: 15px;
   top: 10px;
   cursor: pointer;
+  z-index: 10001; /* Asegurar que esté por encima del contenido del modal */
 }
 
 .close:hover,
@@ -1711,6 +1764,18 @@
 .dark-mode .close:hover,
 .dark-mode .close:focus {
   color: #fff;
+}
+
+/* Hacer el botón de cerrar más grande en móviles */
+@media (max-width: 768px) {
+  .close {
+    font-size: 32px;
+    right: 10px;
+    top: 5px;
+    /* Añadir área de toque más grande */
+    padding: 5px;
+    line-height: 1;
+  }
 }
 
 .modal-header {
@@ -1730,6 +1795,8 @@
   display: flex;
   align-items: center;
   gap: 10px;
+  /* Añadir margen derecho para evitar que el texto se superponga con el botón X */
+  margin-right: 40px;
 }
 
 .dark-mode .modal-header h3 {
@@ -1783,14 +1850,25 @@
   color: #3a71c9;
 }
 
-.feature-section h4 {
-  color: #0d6efd;
-  margin-bottom: 10px;
-  font-size: 1.1rem;
-}
-
-.dark-mode .feature-section h4 {
-  color: #3a71c9;
+/* Hacer las secciones más compactas en móviles */
+@media (max-width: 768px) {
+  .feature-section {
+    margin-bottom: 20px;
+    padding: 12px;
+  }
+  
+  .feature-section h4 {
+    font-size: 1rem;
+    margin-bottom: 8px;
+  }
+  
+  .modal-body ul {
+    padding-left: 15px;
+  }
+  
+  .modal-body li {
+    margin-bottom: 6px;
+  }
 }
 
 @media (max-width: 600px) {

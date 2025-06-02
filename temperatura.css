@@ -1613,7 +1613,8 @@
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
 }
 
-/* Modal para mostrar información */
+/* Modificación específica para los modales - Reemplazar la sección modal existente */
+
 .modal {
   display: none;
   position: fixed;
@@ -1626,29 +1627,61 @@
   background-color: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(5px);
   animation: fadeIn 0.3s ease-out;
+  /* Ajustar para que no cuente el nav */
+  padding-top: 80px; /* Altura aproximada del nav + margen */
 }
 
 .modal-content {
   background-color: var(--card-bg-light);
-  margin: 5% auto;
+  margin: 0 auto;
   padding: 20px;
   border-radius: 12px;
   width: 90%;
   max-width: 800px;
-  max-height: 80vh;
+  max-height: calc(100vh - 160px); /* Restar altura del nav y márgenes */
   overflow-y: auto;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
   animation: slideIn 0.3s ease-out;
   position: relative;
+  /* Centrado vertical en el espacio disponible */
+  transform: translateY(0);
+  margin-top: 20px;
 }
 
 .dark-mode .modal-content {
   background-color: var(--card-bg-dark);
 }
 
+/* Para pantallas más pequeñas, ajustar el espaciado */
+@media (max-width: 768px) {
+  .modal {
+    padding-top: 100px; /* Más espacio en móviles donde el nav puede ser más alto */
+  }
+  
+  .modal-content {
+    width: 95%;
+    padding: 15px;
+    max-height: calc(100vh - 140px);
+    margin-top: 10px;
+  }
+}
+
+/* Para pantallas muy pequeñas en altura */
+@media (max-height: 600px) {
+  .modal {
+    padding-top: 60px;
+  }
+  
+  .modal-content {
+    max-height: calc(100vh - 120px);
+    margin-top: 10px;
+  }
+}
+
+/* Animación mejorada para el deslizamiento */
 @keyframes slideIn {
   from {
-    transform: translateY(-50px);
+    transform: translateY(-30px);
     opacity: 0;
   }
   to {
@@ -1657,6 +1690,7 @@
   }
 }
 
+/* Resto de estilos de modal que se mantienen igual */
 .close {
   color: #aaa;
   float: right;
@@ -1737,6 +1771,16 @@
 
 .dark-mode .feature-section {
   background-color: rgba(255, 255, 255, 0.03);
+}
+
+.feature-section h4 {
+  color: #0d6efd;
+  margin-bottom: 10px;
+  font-size: 1.1rem;
+}
+
+.dark-mode .feature-section h4 {
+  color: #3a71c9;
 }
 
 .feature-section h4 {

@@ -1618,17 +1618,22 @@
 .modal {
   display: none;
   position: fixed;
-  z-index: 10000;
+  z-index: 20000; /* Z-index muy alto para estar por encima del nav (que tiene z-index: 1000) */
   left: 0;
   top: 0;
   width: 100%;
   height: 100%;
   overflow: auto;
-  background-color: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(5px);
+  background-color: rgba(0, 0, 0, 0.6); /* Fondo un poco más oscuro para mejor contraste */
+  backdrop-filter: blur(8px);
   animation: fadeIn 0.3s ease-out;
-  /* Ajustar para que no cuente el nav */
-  padding-top: 80px; /* Altura aproximada del nav + margen */
+  /* Sin padding-top, el modal ocupará toda la pantalla */
+  padding: 20px;
+  box-sizing: border-box;
+  /* Centrado perfecto usando flexbox */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .modal-content {

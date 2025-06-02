@@ -1615,22 +1615,23 @@
 
 /* Modificación específica para los modales - Reemplazar la sección modal existente */
 
-/* Modificación específica para los modales - Reemplazar la sección modal existente */
+/* Modificación específica para los modales - Se superponen completamente al nav */
 
 .modal {
   display: none;
   position: fixed;
-  z-index: 10000;
+  z-index: 20000; /* Z-index muy alto para estar por encima del nav (que tiene z-index: 1000) */
   left: 0;
   top: 0;
   width: 100%;
   height: 100%;
   overflow: auto;
-  background-color: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(5px);
+  background-color: rgba(0, 0, 0, 0.6); /* Fondo un poco más oscuro para mejor contraste */
+  backdrop-filter: blur(8px);
   animation: fadeIn 0.3s ease-out;
-  /* Ajustar para que no cuente el nav - versión mejorada para móvil */
-  padding-top: 80px; /* Altura aproximada del nav + margen para desktop */
+  /* Sin padding-top, el modal ocupará toda la pantalla */
+  padding: 20px;
+  box-sizing: border-box;
 }
 
 .modal-content {
@@ -1640,35 +1641,34 @@
   border-radius: 12px;
   width: 90%;
   max-width: 800px;
-  max-height: calc(100vh - 160px); /* Restar altura del nav y márgenes para desktop */
+  max-height: calc(100vh - 40px); /* Solo restar el padding del modal */
   overflow-y: auto;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4); /* Sombra más pronunciada */
   animation: slideIn 0.3s ease-out;
   position: relative;
-  /* Centrado vertical en el espacio disponible */
-  transform: translateY(0);
-  margin-top: 20px;
+  /* Centrado vertical perfecto */
+  margin-top: 50%;
+  transform: translateY(-50%);
 }
 
 .dark-mode .modal-content {
   background-color: var(--card-bg-dark);
 }
 
-/* Para dispositivos móviles */
+/* Para dispositivos móviles - Simplificado porque ya no dependemos del nav */
 @media (max-width: 768px) {
   .modal {
-    /* Aumentar padding-top para dar más espacio al nav en móviles */
-    padding-top: 140px; /* Más espacio en móviles donde el nav puede ocupar más altura */
+    padding: 15px;
   }
   
   .modal-content {
     width: 95%;
     padding: 15px;
-    /* Ajustar altura máxima para móviles considerando el nav más alto */
-    max-height: calc(100vh - 180px);
-    margin-top: 10px;
-    /* Hacer el modal más compacto en móviles */
+    max-height: calc(100vh - 30px); /* Solo restar el padding del modal */
     border-radius: 8px;
+    /* Centrado más ajustado para móviles */
+    margin-top: 50%;
+    transform: translateY(-50%);
   }
   
   /* Hacer el texto del modal más legible en móviles */
@@ -1682,42 +1682,29 @@
   }
 }
 
-/* Para pantallas muy pequeñas o en orientación horizontal */
+/* Para pantallas muy pequeñas */
 @media (max-width: 480px) {
   .modal {
-    padding-top: 120px;
+    padding: 10px;
   }
   
   .modal-content {
     width: 98%;
     padding: 12px;
-    max-height: calc(100vh - 160px);
-    margin-top: 5px;
+    max-height: calc(100vh - 20px);
   }
 }
 
-/* Para pantallas muy pequeñas en altura (landscape en móviles) */
+/* Para pantallas en orientación horizontal (landscape) */
 @media (max-height: 600px) {
   .modal {
-    padding-top: 80px;
-  }
-  
-  .modal-content {
-    max-height: calc(100vh - 120px);
-    margin-top: 10px;
-  }
-}
-
-/* Para pantallas muy pequeñas en altura Y ancho (móviles en landscape) */
-@media (max-height: 600px) and (max-width: 768px) {
-  .modal {
-    padding-top: 60px;
-  }
-  
-  .modal-content {
-    max-height: calc(100vh - 100px);
-    margin-top: 5px;
     padding: 10px;
+  }
+  
+  .modal-content {
+    max-height: calc(100vh - 20px);
+    margin-top: 50%;
+    transform: translateY(-50%);
   }
   
   .modal-header {
@@ -1727,6 +1714,11 @@
   
   .modal-body {
     font-size: 0.85rem;
+  }
+  
+  .feature-section {
+    margin-bottom: 15px;
+    padding: 10px;
   }
 }
 
@@ -1752,18 +1744,33 @@
   right: 15px;
   top: 10px;
   cursor: pointer;
-  z-index: 10001; /* Asegurar que esté por encima del contenido del modal */
+  z-index: 20001; /* Z-index aún más alto para estar por encima del contenido del modal */
+  transition: all 0.3s ease;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
 .close:hover,
 .close:focus {
   color: #000;
   text-decoration: none;
+  background-color: rgba(255, 255, 255, 0.2);
+  transform: scale(1.1);
+}
+
+.dark-mode .close {
+  background-color: rgba(0, 0, 0, 0.2);
 }
 
 .dark-mode .close:hover,
 .dark-mode .close:focus {
   color: #fff;
+  background-color: rgba(0, 0, 0, 0.4);
 }
 
 /* Hacer el botón de cerrar más grande en móviles */
